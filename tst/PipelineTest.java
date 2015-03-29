@@ -37,7 +37,7 @@ public class PipelineTest {
 
         String output = Piper.pipe(5)
                 .to(toYs)
-                .andThen(appendOneZ)
+                .thenTo(appendOneZ)
                 //wraps the forward composition of the previous two lines
                 .wrapWith(wrapWithDecs)
                 .get();
@@ -65,11 +65,11 @@ public class PipelineTest {
     public void concatenateTwoPipelineChains(){
         Pair<Integer,Integer> output = Piper.pipe(new Pair<>(2, 2))
                 .to(pair -> pair.getKey()*pair.getValue())
-                .andThen(num -> num + 2)
+                .thenTo(num -> num + 2)
                 //Evaluation happens here and is wrapped in a new piper.PipelineInput
                 .pipe()
                 .to(num -> new Pair<>(1, num))
-                .andThen(pair -> new Pair<>(pair.getKey() + 1, pair.getValue() + 1))
+                .thenTo(pair -> new Pair<>(pair.getKey() + 1, pair.getValue() + 1))
                 .get();
 
         assertThat(output.getKey(), is(2));

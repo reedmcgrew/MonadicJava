@@ -11,7 +11,7 @@ public class main {
 
         Piper.pipe("Stuff")
                 .to(str -> str + "_addThis")
-                .andThen(str -> str + "_andThenThis")
+                .thenTo(str -> str + "_andThenThis")
                 .wrapWith(main::wrappy)
                 .thenDo(System.out::println);
 
