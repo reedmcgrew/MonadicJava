@@ -1,7 +1,9 @@
-import piper.Piper;
-import piper.Wrapper;
+package railways;
+
 import javafx.util.Pair;
 import org.junit.Test;
+import railways.Pipeable;
+import railways.Wrapper;
 
 import java.util.function.Function;
 
@@ -11,11 +13,11 @@ import static org.hamcrest.Matchers.is;
 /**
  * Created by mcgrewbr on 3/27/15.
  */
-public class PipelineTest {
+public class PipeableTest {
     @Test
     public void pipeAnInputToAFunction(){
-        int output = Piper.pipe("Stringy")
-                .to(str -> str.length())
+        int output = Pipeable.of("Stringy")
+                .thenTo(str -> str.length())
                 .get();
         assertThat(output, is(7));
     }
@@ -35,8 +37,8 @@ public class PipelineTest {
 
         Function<String, String> appendOneZ = (str) -> str + "z";
 
-        String output = Piper.pipe(5)
-                .to(toYs)
+        String output = Pipeable.of(5)
+                .thenTo(toYs)
                 .thenTo(appendOneZ)
                 //wraps the forward composition of the previous two lines
                 .wrapWith(wrapWithDecs)
@@ -47,15 +49,15 @@ public class PipelineTest {
 
     @Test
     public void evaluateAPipelineAndConsumeItsResult(){
-        Piper.pipe(7L)
-                .to(num -> num*3L)
+        Pipeable.of(7L)
+                .thenTo(num -> num * 3L)
                 .thenDo(result -> assertThat(result, is(21L)));
     }
 
     @Test
     public void evaluateAPipeline(){
-        int output = Piper.pipe(1)
-                .to(num -> num + 5)
+        int output = Pipeable.of(1)
+                .thenTo(num -> num + 5)
                 .get();
 
         assertThat(output, is(6));
@@ -63,12 +65,12 @@ public class PipelineTest {
 
     @Test
     public void concatenateTwoPipelineChains(){
-        Pair<Integer,Integer> output = Piper.pipe(new Pair<>(2, 2))
-                .to(pair -> pair.getKey()*pair.getValue())
+        Pair<Integer,Integer> output = Pipeable.of(new Pair<>(2, 2))
+                .thenTo(pair -> pair.getKey() * pair.getValue())
                 .thenTo(num -> num + 2)
-                //Evaluation happens here and is wrapped in a new piper.PipelineInput
+                //Evaluation happens here and is wrapped in a new railways.PipelineInput
                 .pipe()
-                .to(num -> new Pair<>(1, num))
+                .thenTo(num -> new Pair<>(1, num))
                 .thenTo(pair -> new Pair<>(pair.getKey() + 1, pair.getValue() + 1))
                 .get();
 
@@ -78,7 +80,7 @@ public class PipelineTest {
 
     @Test
     public void pipeAnInputToAConsumer(){
-        Piper.pipe(5)
+         Pipeable.of(5)
                 .thenDo(num -> assertThat(num, is(5)));
     }
 }

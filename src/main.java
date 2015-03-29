@@ -1,4 +1,4 @@
-import piper.Piper;
+import railways.Pipeable;
 
 import java.util.function.Function;
 
@@ -9,8 +9,8 @@ public class main {
 
     public static void main(String[] args){
 
-        Piper.pipe("Stuff")
-                .to(str -> str + "_addThis")
+        Pipeable.of("Stuff")
+                .thenTo(str -> str + "_addThis")
                 .thenTo(str -> str + "_andThenThis")
                 .wrapWith(main::wrappy)
                 .thenDo(System.out::println);

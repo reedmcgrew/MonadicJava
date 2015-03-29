@@ -1,4 +1,4 @@
-package piper;
+package railways;
 
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -7,16 +7,26 @@ import java.util.function.Function;
  * Represents an un-evaluated function and its intended input.  PipelineSteps facilitate function composition,
  * including transparent function wrapping (decoration).
  */
-public class PipelineStep<I, O> {
+public class Pipeable<I, O> {
     private final Function<I, O> func;
     private final I input;
 
     /*
      * Create a new pipeline step
      */
-    public PipelineStep(Function<I, O> func, I input) {
+    public Pipeable(Function<I, O> func, I input) {
         this.func = func;
         this.input = input;
+    }
+
+    /*
+     * Represents the starting point of a pipeline.  The given input can then be "piped" to multiple functions
+     * composed together (see PipelineStep).
+     *
+     * @param input Any input.
+     */
+    public static <T> Pipeable<T,T> of(T input){
+        return new Pipeable<>(Function.identity(), input);
     }
 
     /*
@@ -24,8 +34,8 @@ public class PipelineStep<I, O> {
      *
      * @param after The function to which the the output of the current pipeline step's function will be applied.
      */
-    public <OPRIME> PipelineStep<I,OPRIME> thenTo(Function<O, OPRIME> after){
-        return new PipelineStep<>(func.andThen(after), input);
+    public <OPRIME> Pipeable<I,OPRIME> thenTo(Function<O, OPRIME> after){
+        return new Pipeable<>(func.andThen(after), input);
     }
 
     /*
@@ -42,8 +52,8 @@ public class PipelineStep<I, O> {
      * @param wrapper A higher-order function that will take the current PipelineStep's function as input
      *      and return a function with identical
      */
-    public PipelineStep<I,O> wrapWith(Wrapper<I,O> wrapper){
-        return new PipelineStep<>(wrapper.wrap(func), input);
+    public Pipeable<I,O> wrapWith(Wrapper<I,O> wrapper){
+        return new Pipeable<>(wrapper.wrap(func), input);
     }
 
     /*
@@ -65,7 +75,7 @@ public class PipelineStep<I, O> {
     /*
      * Apply the input to the current function, passing
      */
-    public PipelineInput<O> pipe() {
-        return new PipelineInput(get());
+    public Pipeable<O, O> pipe() {
+        return new Pipeable<>(Function.identity(), get());
     }
 }
