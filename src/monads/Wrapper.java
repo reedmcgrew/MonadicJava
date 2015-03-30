@@ -1,4 +1,4 @@
-package railways;
+package monads;
 
 import java.util.function.Function;
 

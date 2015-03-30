@@ -1,4 +1,4 @@
-package railways;
+package monads;
 
 import javafx.util.Pair;
 import org.junit.Test;
@@ -66,7 +66,7 @@ public class PipeableTest {
         Pair<Integer,Integer> output = Pipeable.of(new Pair<>(2, 2))
                 .thenTo(pair -> pair.getKey() * pair.getValue())
                 .thenTo(num -> num + 2)
-                //Evaluation happens here and is wrapped in a new railways.PipelineInput
+                //Evaluation happens here and is wrapped in a new monads.PipelineInput
                 .pipe()
                 .thenTo(num -> new Pair<>(1, num))
                 .thenTo(pair -> new Pair<>(pair.getKey() + 1, pair.getValue() + 1))

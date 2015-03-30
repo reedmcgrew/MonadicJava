@@ -1,4 +1,4 @@
-import railways.Pipeable;
+import monads.Pipeable;
 
 import java.util.function.Function;
 
