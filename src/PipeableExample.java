@@ -5,14 +5,14 @@ import java.util.function.Function;
 /**
  * Created by mcgrewbr on 3/27/15.
  */
-public class main {
+public class PipeableExample {
 
     public static void main(String[] args){
 
         Pipeable.of("Stuff")
                 .thenTo(str -> str + "_addThis")
                 .thenTo(str -> str + "_andThenThis")
-                .wrapWith(main::wrappy)
+                .wrapWith(PipeableExample::wrappy)
                 .thenDo(System.out::println);
 
     }

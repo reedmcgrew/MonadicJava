@@ -2,8 +2,6 @@ package railways;
 
 import javafx.util.Pair;
 import org.junit.Test;
-import railways.Pipeable;
-import railways.Wrapper;
 
 import java.util.function.Function;
 

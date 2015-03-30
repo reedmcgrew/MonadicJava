@@ -4,8 +4,11 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
- * Represents an un-evaluated function and its intended input.  PipelineSteps facilitate function composition,
+ * Represents an un-evaluated function and its intended input.  Pipeables facilitate function composition,
  * including transparent function wrapping (decoration).
+ * 
+ * The intent behind this class is to implement OCaml-style piping and facilitate a bit cleaner function
+ * wrapping (for use as an alternative to aspects).
  */
 public class Pipeable<I, O> {
     private final Function<I, O> func;
